@@ -22,10 +22,13 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          light: "hsl(var(--primary-light))",
+          glow: "hsl(var(--primary-glow))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+          light: "hsl(var(--secondary-light))",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -62,6 +65,20 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      backgroundImage: {
+        "gradient-hero": "var(--gradient-hero)",
+        "gradient-wellness": "var(--gradient-wellness)",
+        "gradient-card": "var(--gradient-card)",
+      },
+      boxShadow: {
+        "soft": "var(--shadow-soft)",
+        "wellness": "var(--shadow-wellness)",
+        "card": "var(--shadow-card)",
+      },
+      transitionProperty: {
+        "smooth": "var(--transition-smooth)",
+        "gentle": "var(--transition-gentle)",
       },
       keyframes: {
         "accordion-down": {
