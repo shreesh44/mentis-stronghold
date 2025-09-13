@@ -11,6 +11,9 @@ import { useToast } from "@/hooks/use-toast";
 
 const Auth = () => {
   const [userType, setUserType] = useState<"student" | "therapist">("student");
+  const [therapistType, setTherapistType] = useState<
+    "School/Academic Counselor" | "Child & Adolescent Therapist" | "Student Wellness Coach" | "Peer Support Counselor" | "Mindfulness & Stress-Relief Coach" | "Grief & Adjustment Counselor" | "Substance Use & Behavioral Counselor" | "Family / Relationship Therapist"
+  >("School/Academic Counselor");
   const { toast } = useToast();
 
   const handleSignup = (e: React.FormEvent) => {
@@ -124,6 +127,26 @@ const Auth = () => {
                       <div className="space-y-2">
                         <Label htmlFor="experience">Years of Experience</Label>
                         <Input id="experience" type="number" placeholder="5" min="1" required />
+                      </div>
+                    )}
+                    {userType === "therapist" && (
+                      <div className="space-y-2">
+                      <Label htmlFor="therapistType">Type of Therapist</Label>
+                      <Select value={therapistType} onValueChange={(value: "School/Academic Counselor" | "Child & Adolescent Therapist" | "Student Wellness Coach" | "Peer Support Counselor" | "Mindfulness & Stress-Relief Coach" | "Grief & Adjustment Counselor" | "Substance Use & Behavioral Counselor" | "Family / Relationship Therapist") => setTherapistType(value)}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="School/Academic Counselor">School/Academic Counselor</SelectItem>
+                          <SelectItem value="Child & Adolescent Therapist">Child & Adolescent Therapist</SelectItem>
+                          <SelectItem value="Student Wellness Coach">Student Wellness Coach</SelectItem>
+                          <SelectItem value="Peer Support Counselor">Peer Support Counselor</SelectItem>
+                          <SelectItem value="Mindfulness & Stress-Relief Coach">Mindfulness & Stress-Relief Coach</SelectItem>
+                          <SelectItem value="Grief & Adjustment Counselor">Grief & Adjustment Counselor</SelectItem>
+                          <SelectItem value="Substance Use & Behavioral Counselor">Substance Use & Behavioral Counselor</SelectItem>
+                          <SelectItem value="Family / Relationship Therapist">Family / Relationship Therapist</SelectItem>
+                        </SelectContent>
+                      </Select>
                       </div>
                     )}
 

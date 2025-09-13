@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Heart, MessageCircle, BookOpen, Calendar, LogIn } from "lucide-react";
+import { MessageCircle, BookOpen, Calendar, LogIn } from "lucide-react";
+import logoImage from "@/assets/logo.jpg";
 
 const Navigation = () => {
   const location = useLocation();
@@ -11,8 +12,8 @@ const Navigation = () => {
     <nav className="bg-background/95 backdrop-blur-md border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-gradient-hero rounded-full flex items-center justify-center">
-            <Heart className="h-5 w-5 text-white" />
+          <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center">
+            <img src={logoImage} alt="MentiSphere Logo" className="w-full h-full object-cover" />
           </div>
           <span className="text-xl font-bold text-foreground">MentiSphere</span>
         </Link>
