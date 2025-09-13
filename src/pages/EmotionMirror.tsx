@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import Navigation from "@/components/Navigation";
 import { MessageCircle, Send, Bot, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ChatService } from "@/services/chatService";
 
 interface Message {
   id: string;
@@ -27,16 +28,7 @@ const EmotionMirror = () => {
   const [isTyping, setIsTyping] = useState(false);
   const { toast } = useToast();
 
-  const aiResponses = [
-    "I hear that you're going through a challenging time. It's completely normal to feel this way, and I want you to know that your feelings are valid.",
-    "Thank you for sharing that with me. It sounds like you're dealing with a lot right now. Let's explore some coping strategies that might help.",
-    "I notice you might be feeling stressed. Here are some techniques that many students find helpful: deep breathing, taking short breaks, and breaking tasks into smaller steps.",
-    "Your mental health is important. Have you tried any mindfulness exercises? Even 5 minutes of meditation can make a difference.",
-    "It's great that you're reaching out for support. That shows real strength. What activities usually help you feel better?",
-    "I'm sensing some anxiety in your message. Remember, it's okay to feel anxious sometimes. What would you like to focus on right now?",
-  ];
-
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (!inputText.trim()) return;
 
     const userMessage: Message = {
@@ -50,17 +42,55 @@ const EmotionMirror = () => {
     setInputText("");
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      // Call the API instead of using static responses
+      const response = await ChatService.sendMessage(userMessage.text);
+      
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: aiResponses[Math.floor(Math.random() * aiResponses.length)],
+        text: response.response,
         sender: "ai",
         timestamp: new Date(),
       };
+      
       setMessages(prev => [...prev, aiResponse]);
+      
+      // Show toast if there was an error but we got a fallback response
+      if (response.status === 'fallback' || response.status === 'error') {
+        toast({
+          title: "Connection Issue",
+          description: "Using offline mode. The AI is still here to support you!",
+          variant: "default",
+        });
+      }
+      
+    } catch (error) {
+      console.error('Error sending message:', error);
+      
+      // Fallback to static response if API fails completely
+      const fallbackResponses = [
+        "I hear that you're going through a challenging time. It's completely normal to feel this way, and I want you to know that your feelings are valid.",
+        "Thank you for sharing that with me. It sounds like you're dealing with a lot right now. Let's explore some coping strategies that might help.",
+        "I notice you might be feeling stressed. Here are some techniques that many students find helpful: deep breathing, taking short breaks, and breaking tasks into smaller steps.",
+      ];
+      
+      const aiResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        text: fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)],
+        sender: "ai",
+        timestamp: new Date(),
+      };
+      
+      setMessages(prev => [...prev, aiResponse]);
+      
+      toast({
+        title: "Offline Mode",
+        description: "I'm here for you even when there are connection issues.",
+        variant: "default",
+      });
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
